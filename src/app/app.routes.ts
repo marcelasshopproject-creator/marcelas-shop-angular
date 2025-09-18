@@ -15,8 +15,13 @@ export const routes: Routes = [
     loadChildren: () => import('./admin/admin-shell/admin.routes'),
   },
   {
+    path: 'ingresar',
+    loadComponent: () => import('./login/login').then(c => c.Login)
+  },
+  {
     path: '**',
     redirectTo: 'tienda',
     pathMatch: 'full',
   },
 ];
+  

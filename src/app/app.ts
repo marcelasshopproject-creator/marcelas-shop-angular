@@ -12,5 +12,5 @@ import { Footer } from './shared/ui/footer/footer';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('marcelas-shop-angular');
+  protected readonly title = signal("Marcelas's Shop");
 }
