@@ -1,11 +1,20 @@
 import { Component, inject, signal, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { SupabaseService } from '../../database/supabase-service';
 import { passwordMatchValidator } from '../../core/validators/password-match-validator';
 
-import { RequestStatus } from '../../core/types/request-status-type';
-
+/* Components */
 import { Loading } from '../../shared/ui/loading/loading';
+
+/* Services */
+import { LoginService } from '../../core/services/login-service';
+import { ProfileService } from '../../core/services/profile-service';
+
+
+/* Interfaces */
+import { Profile } from '../../core/interfaces/profile';
+
+/* Types */
+import { RequestStatus } from '../../core/types/request-status-type';
 
 @Component({
   selector: 'app-register-form',
@@ -14,13 +23,17 @@ import { Loading } from '../../shared/ui/loading/loading';
 })
 export class RegisterForm {
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private supabaseService: SupabaseService = inject(SupabaseService);
+  private profileService: ProfileService = inject(ProfileService);
+  private loginService: LoginService = inject(LoginService);
   changeToLoginMode = output();
   showPassword = signal(false);
   requestStatus = signal<RequestStatus>('init');
 
-  form = this.formBuilder.nonNullable.group(
+  form = this.formBuilder.group(
     {
+      fullname: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRepeat: ['', [Validators.required, Validators.minLength(6)]],
@@ -38,28 +51,47 @@ export class RegisterForm {
     this.form.disable();
     this.requestStatus.set('loading');
 
-    const { email, password } = this.form.getRawValue();
+    const { fullname, address, phone, email, password } = this.form.value;
 
     const {
       data: { user },
-      error,
-    } = await this.supabaseService.supabase.auth.signUp({
-      email,
-      password,
-    });
+      error: authError,
+    } = await this.profileService.register(email!, password!);
 
-    if (error) {
+    if (authError) {
       this.requestStatus.set('error');
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.form.enable();
+      }, 3000);
+      return;
     }
 
     if (user) {
-      this.requestStatus.set('success');
+      const profile: Profile = {
+        fullname: fullname!,
+        address: address!,
+        phone: phone!,
+        is_admin: false,
+        is_deleted: false,
+        is_blocked: false,
+      };
+      const { error: profileError } = await this.profileService.updateUser(user.id, profile);
+      if (profileError) {
+        this.requestStatus.set('error');
+        setTimeout(() => {
+          this.requestStatus.set('init');
+          this.form.enable();
+        }, 3000);
+        return;
+      }
+
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.form.enable();
+        this.changeToLoginMode.emit();
+      }, 3000);
       this.form.reset();
     }
-    
-    setTimeout(() => {
-      this.requestStatus.set('init');
-      this.setChangeToLoginMode();
-    }, 3000);
   }
 }

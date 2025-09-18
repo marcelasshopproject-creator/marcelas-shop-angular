@@ -1,4 +1,56 @@
 <form class="max-w-sm mx-auto text-center relative" [formGroup]="form" (ngSubmit)="register()">
+  <!---------- Fullname ----------->
+  <div class="mb-5 relative">
+    <label for="fullname" class="block text-left mb-1 text-sm font-medium text-gray-900"
+      >Tu Nombre</label
+    >
+    <input
+      type="text"
+      id="fullname"
+      formControlName="fullname"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      required
+    />
+    @if (form.controls.fullname.touched && form.controls.fullname.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">Tu nombre es requerido</p>
+    }
+  </div>
+
+  <!---------- Address ----------->
+  <div class="mb-5 relative">
+    <label for="address" class="block text-left mb-1 text-sm font-medium text-gray-900"
+      >Tu Dirección</label
+    >
+    <input
+      type="text"
+      id="address"
+      formControlName="address"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      required
+    />
+    @if (form.controls.address.touched && form.controls.address.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">Tu dirección es requerida</p>
+    }
+  </div>
+
+  <!---------- Address ----------->
+  <div class="mb-5 relative">
+    <label for="phone" class="block text-left mb-1 text-sm font-medium text-gray-900"
+      >Tu Teléfono</label
+    >
+    <input
+      type="phone"
+      id="phone"
+      formControlName="phone"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      required
+    />
+    @if (form.controls.phone.touched && form.controls.phone.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">Tu teléfono es requerido</p>
+    }
+  </div>
+
+  <!---------- Email ----------->
   <div class="mb-5 relative">
     <label for="email" class="block text-left mb-1 text-sm font-medium text-gray-900"
       >Tu Email</label
