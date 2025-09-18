@@ -10,5 +10,9 @@ import { RegisterForm } from './register-form/register-form';
   templateUrl: './login.html',
 })
 export class Login {
-  loginMode = signal(true)
+  loginMode = signal<boolean>(true);
+
+  changeToLoginMode() {
+    this.loginMode.set(true);
+  }
 }
