@@ -6,7 +6,6 @@ import { passwordMatchValidator } from '../../core/validators/password-match-val
 import { Loading } from '../../shared/ui/loading/loading';
 
 /* Services */
-import { LoginService } from '../../core/services/login-service';
 import { ProfileService } from '../../core/services/profile-service';
 
 
@@ -24,7 +23,6 @@ import { RequestStatus } from '../../core/types/request-status-type';
 export class RegisterForm {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private profileService: ProfileService = inject(ProfileService);
-  private loginService: LoginService = inject(LoginService);
   changeToLoginMode = output();
   showPassword = signal(false);
   requestStatus = signal<RequestStatus>('init');
