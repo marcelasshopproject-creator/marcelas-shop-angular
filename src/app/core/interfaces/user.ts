@@ -4,4 +4,6 @@ export interface User {
   isAdmin: boolean;
   phone: string;
   address: string;
+  isDeleted: boolean;
+  isBlocked: boolean;
 }
