@@ -13,4 +13,11 @@ export class AuthService {
   private supabase = this.supabaseService.supabase;
 
   session = signal<AuthSession | null>(null)
+
+  getSession = async () => {
+    const { data: { session } } = await this.supabase.auth.getSession();
+    this.session.set(session);
+    console.log(session);
+    return session;
+  }
 }
