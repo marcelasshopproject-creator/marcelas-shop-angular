@@ -1,5 +1,5 @@
 <div class="w-full max-w-[800px] mx-auto">
-  <h1 class="text-3xl text-center py-3">Categorías</h1>
+  <h1 class="text-3xl text-center py-3">Products</h1>
 
   <!-- Table Header -->
   <section class="flex items-center bg-pink-50">
@@ -10,7 +10,7 @@
         >
           <button
             type="button"
-            routerLink="/admin/categories/nueva-categoria"
+            routerLink="/admin/productos/crear"
             class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
           >
             <svg
@@ -24,7 +24,7 @@
                 d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
               />
             </svg>
-            Crear Categoría
+            Crear Producto
           </button>
           <button
             type="button"
@@ -42,6 +42,8 @@
             <thead class="text-xs text-gray-700 bg-pink-200 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Nombre</th>
+                <th scope="col" class="px-6 py-3">Precio</th>
+                <th scope="col" class="px-6 py-3">Stock</th>
                 <th scope="col" class="px-6 py-3">Acciones</th>
               </tr>
             </thead>
@@ -50,6 +52,8 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Apple MacBook Pro 17"
                 </th>
+                <td class="px-6 px-4">$1000</td>
+                <td class="px-6 px-4">100</td>
                 <td class="px-6 py-4">
                   <button class="mr-6">✏️</button>
                   <button class="mr-6">❌</button>
@@ -59,6 +63,8 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Microsoft Surface Pro
                 </th>
+                <td class="px-6 px-4">$1000</td>
+                <td class="px-6 px-4">100</td>
                 <td class="px-6 py-4">
                   <button class="mr-6">✏️</button>
                   <button class="mr-6">❌</button>
@@ -68,6 +74,8 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Magic Mouse 2
                 </th>
+                <td class="px-6 px-4">$1000</td>
+                <td class="px-6 px-4">100</td>
                 <td class="px-6 py-4">
                   <button class="mr-6">✏️</button>
                   <button class="mr-6">❌</button>
