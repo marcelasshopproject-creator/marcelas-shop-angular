@@ -52,6 +52,6 @@ export class Header implements OnInit {
 
   signOut() {
     this.authService.signOut();
-    this.getProfile()
+    this.profile.set(null)
   }
 }
