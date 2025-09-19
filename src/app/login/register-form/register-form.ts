@@ -6,7 +6,7 @@ import { passwordMatchValidator } from '../../core/validators/password-match-val
 import { Loading } from '../../shared/ui/loading/loading';
 
 /* Services */
-import { ProfileService } from '../../core/services/profile-service';
+import { AuthService } from '../../core/services/auth-service';
 
 
 /* Interfaces */
@@ -22,7 +22,7 @@ import { RequestStatus } from '../../core/types/request-status-type';
 })
 export class RegisterForm {
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private profileService: ProfileService = inject(ProfileService);
+  private authService: AuthService = inject(AuthService);
   changeToLoginMode = output();
   showPassword = signal(false);
   requestStatus = signal<RequestStatus>('init');
@@ -43,7 +43,7 @@ export class RegisterForm {
     this.changeToLoginMode.emit();
   }
 
-  async register() {
+  async signUp() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
     this.form.disable();
@@ -54,7 +54,7 @@ export class RegisterForm {
     const {
       data: { user },
       error: authError,
-    } = await this.profileService.register(email!, password!);
+    } = await this.authService.signUp(email!, password!);
 
     if (authError) {
       this.requestStatus.set('error');
@@ -74,7 +74,7 @@ export class RegisterForm {
         is_deleted: false,
         is_blocked: false,
       };
-      const { error: profileError } = await this.profileService.updateUser(user.id, profile);
+      const { error: profileError } = await this.authService.updateProfile(user.id, profile);
       if (profileError) {
         this.requestStatus.set('error');
         setTimeout(() => {

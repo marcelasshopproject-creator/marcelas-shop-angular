@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Loading } from '../../shared/ui/loading/loading';
 
 /* Services */
-import { LoginService } from '../../core/services/login-service';
+import { AuthService } from '../../core/services/auth-service';
 
 /* Interfaces */
 import { AuthUser } from '../../core/interfaces/auth-user';
@@ -21,7 +21,7 @@ import { RequestStatus } from '../../core/types/request-status-type';
 })
 export class LoginForm {
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private loginService: LoginService = inject(LoginService);
+  private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
   showPassword = signal(false);
   requestStatus = signal<RequestStatus>('init');
@@ -31,7 +31,7 @@ export class LoginForm {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  async login() {
+  async signIn() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
     this.form.disable();
@@ -42,7 +42,7 @@ export class LoginForm {
     const {
       data: { user },
       error: authError,
-    } = await this.loginService.login(authUser!);
+    } = await this.authService.signIn(authUser!);
 
     if (authError) {
       this.requestStatus.set('error');
