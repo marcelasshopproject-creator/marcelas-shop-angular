@@ -31,28 +31,32 @@
       <ul
         class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
       >
+        @if (profile()) {
         <li>
-          <a
-            routerLink="/"
-            class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:text-pink-200 md:hover:text-pink-100 md:p-0"
-            aria-current="page"
-            >Home</a
+          <p class="text-white/50">Hola, {{ profile()?.fullname }}</p>
+        </li>
+        <li>
+          <button
+            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            >🛒</button
           >
         </li>
+        <li>
+          <button
+            class="block py-2 px-3 text-white/50 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+          >
+            Salir
+          </button>
+        </li>
+        } @else {
         <li>
           <a
             routerLink="/ingresar"
-            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0"
+            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
             >Ingresar</a
           >
         </li>
-        <li>
-          <a
-            routerLink="/carrito"
-            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0"
-            >Carrito</a
-          >
-        </li>
+        }
       </ul>
     </div>
   </div>

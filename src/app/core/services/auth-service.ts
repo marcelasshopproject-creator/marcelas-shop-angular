@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { AuthSession, AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { AuthSession, AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 
 import { SupabaseService } from '../../database/supabase-service';
 
@@ -14,12 +14,14 @@ export class AuthService {
   private supabase = this.supabaseService.supabase;
 
   _session = signal<AuthSession | null>(null);
+  private user = signal<User | null>(null);
+  _profile = signal<Profile | null>(null);
 
   get session() {
     this.supabase.auth.getSession().then(({ data }) => {
-      this._session.set(data.session);
+      this.user.set(data.session?.user as User);
     });
-    return this._session;
+    return this.user();
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
@@ -42,6 +44,10 @@ export class AuthService {
 
   signOut() {
     this.supabase.auth.signOut();
+  }
+
+  profile(user: User) {
+    return this.supabase.from('profiles').select(`*`).eq('id', user.id).single();
   }
 
   updateProfile = async (id: string, profile: Profile) =>
