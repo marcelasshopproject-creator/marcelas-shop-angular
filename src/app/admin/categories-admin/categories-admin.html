@@ -26,15 +26,20 @@
             </svg>
             Crear Categoría
           </button>
+          <button
+            type="button"
+            routerLink="/admin"
+            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+          >
+            Volver
+          </button>
         </div>
 
         <!-- Table -->
 
         <div class="relative overflow-x-auto">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead
-              class="text-xs text-gray-700 bg-pink-200 uppercase bg-gray-50"
-            >
+            <thead class="text-xs text-gray-700 bg-pink-200 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Nombre</th>
                 <th scope="col" class="px-6 py-3">Acciones</th>
@@ -42,39 +47,30 @@
             </thead>
             <tbody>
               <tr class="bg-white border-b border-gray-200">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Apple MacBook Pro 17"
                 </th>
                 <td class="px-6 py-4">
-                    <button class="mr-6">✏️</button>
-                    <button class="mr-6">❌</button>
+                  <button class="mr-6">✏️</button>
+                  <button class="mr-6">❌</button>
                 </td>
               </tr>
               <tr class="bg-white border-b border-gray-200">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Microsoft Surface Pro
                 </th>
                 <td class="px-6 py-4">
-                    <button class="mr-6">✏️</button>
-                    <button class="mr-6">❌</button>
+                  <button class="mr-6">✏️</button>
+                  <button class="mr-6">❌</button>
                 </td>
               </tr>
               <tr class="bg-white">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   Magic Mouse 2
                 </th>
                 <td class="px-6 py-4">
-                    <button class="mr-6">✏️</button>
-                    <button class="mr-6">❌</button>
+                  <button class="mr-6">✏️</button>
+                  <button class="mr-6">❌</button>
                 </td>
               </tr>
             </tbody>
