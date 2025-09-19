@@ -11,7 +11,7 @@
           <button
             type="button"
             routerLink="/admin/categorias/crear"
-            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+            class="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
           <button
             type="button"
             routerLink="/admin"
-            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+            class="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
           >
             Volver
           </button>
@@ -42,37 +42,41 @@
             <thead class="text-xs text-gray-700 bg-pink-200 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Nombre</th>
-                <th scope="col" class="px-6 py-3">Acciones</th>
+                <th scope="col" class="px-6 py-3 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
+              @if (requestStatus() === "loading") {
+              <tr>
+                <td class="px-6 py-4 text-center" colspan="2">Cargando...</td>
+              </tr>
+              } @else if (requestStatus() === "error") {
+              <tr>
+                <td class="px-6 py-4 text-center text-red-500" colspan="2">
+                  Error, no se pudieron cargar los datos
+                </td>
+              </tr>
+              } @else { @if(categories().length > 0) { @for (category of categories(); track $index)
+              {
               <tr class="bg-white border-b border-gray-200">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Apple MacBook Pro 17"
+                  {{ category.name }}
                 </th>
-                <td class="px-6 py-4">
-                  <button class="mr-6">✏️</button>
-                  <button class="mr-6">❌</button>
+                <td class="px-6 py-4 text-center">
+                  <button
+                    class="cursor-pointer mr-6"
+                    [routerLink]="`/admin/categorias/editar/${category.id}`"
+                  >
+                    ✏️
+                  </button>
+                  <button (click)="deleteCategory(category.id)" class="cursor-pointer">❌</button>
                 </td>
               </tr>
-              <tr class="bg-white border-b border-gray-200">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">
-                  <button class="mr-6">✏️</button>
-                  <button class="mr-6">❌</button>
-                </td>
+              } } @else {
+              <tr>
+                <td class="px-6 py-4 text-center" colspan="2">No hay datos para mostrar</td>
               </tr>
-              <tr class="bg-white">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">
-                  <button class="mr-6">✏️</button>
-                  <button class="mr-6">❌</button>
-                </td>
-              </tr>
+              } }
             </tbody>
           </table>
         </div>
