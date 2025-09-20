@@ -34,7 +34,7 @@ export class CategoriesAdmin implements OnInit {
   };
 
   deleteCategory = async (id: Category['id']) => {
-    const confirmDelete = confirm('Estas seguro de borrar la categoría');
+    const confirmDelete = confirm('¿Estás seguro de borrar la categoría');
     if (!confirmDelete) return;
     const { error } = await this.categoryService.delete(id);
     if (error) {

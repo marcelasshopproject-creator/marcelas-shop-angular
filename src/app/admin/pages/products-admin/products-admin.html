@@ -1,4 +1,4 @@
-<div class="w-full max-w-[800px] mx-auto">
+<div class="w-full max-w-[1200px] mx-auto">
   <h1 class="text-3xl text-center py-3">Products</h1>
 
   <!-- Table Header -->
@@ -28,6 +28,13 @@
           </button>
           <button
             type="button"
+            (click)="getProducts()"
+            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+          >
+            Actualizar
+          </button>
+          <button
+            type="button"
             routerLink="/admin"
             class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
           >
@@ -52,11 +59,11 @@
             <tbody>
               @if (requestStatus() === "loading") {
               <tr>
-                <td class="px-6 py-4 text-center" colspan="2">Cargando...</td>
+                <td class="px-6 py-4 text-center" colspan="6">Cargando...</td>
               </tr>
               } @else if (requestStatus() === "error") {
               <tr>
-                <td class="px-6 py-4 text-center text-red-500" colspan="2">
+                <td class="px-6 py-4 text-center text-red-500" colspan="6">
                   Error, no se pudieron cargar los datos
                 </td>
               </tr>
@@ -77,7 +84,7 @@
               </tr>
             } } @else {
               <tr>
-                <td class="px-6 py-4 text-center" colspan="2">No hay datos para mostrar</td>
+                <td class="px-6 py-4 text-center" colspan="6">No hay datos para mostrar</td>
               </tr>
               } }
             </tbody>

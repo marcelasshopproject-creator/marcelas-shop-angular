@@ -19,10 +19,10 @@ export class ProductData {
 
   private TABLENAME = 'products';
 
-  getAll = async () => this.supabase.from(this.TABLENAME).select('*, category(*)');
+  getAll = async () => this.supabase.from(this.TABLENAME).select('*, category(*)').eq('is_deleted', false);
 
   get = async (id: Product['id']) =>
-    this.supabase.from(this.TABLENAME).select('*, category(*)').eq('id', id).single();
+    this.supabase.from(this.TABLENAME).select('*, category(*)').eq('id', id).eq('is_deleted', false).single();
 
   create = async (dto: CreateProductDto) =>
     this.supabase.from(this.TABLENAME).insert(dto).select();
@@ -30,5 +30,5 @@ export class ProductData {
   update = async (id: Product['id'], dto: UpdateProductDto) =>
     this.supabase.from(this.TABLENAME).update(dto).eq('id', id).select();
 
-  delete = async (id: Product['id']) => this.supabase.from(this.TABLENAME).delete().eq('id', id);
+  delete = async (id: Product['id']) => this.supabase.from(this.TABLENAME).update({is_deleted: true}).eq('id', id);
 }

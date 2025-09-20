@@ -38,8 +38,13 @@ export class ProductsAdmin {
   }
 
   async delete(id: number) {
-    this.requestStatus.set('loading');
-    await this.productService.delete(id);
-    this.getProducts();
+    const confirmDelete = confirm('¿Estás seguro de borrar el producto?');
+    if (!confirmDelete) return;
+    const { error } = await this.productService.delete(id);
+    if (error) {
+      alert('No se pudo borrar el producto');
+    } else {
+      this.getProducts();
+    }
   }
 }
