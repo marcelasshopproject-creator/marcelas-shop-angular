@@ -1,5 +1,7 @@
 <form class="max-w-sm mx-auto text-center relative" [formGroup]="form" (ngSubmit)="save()">
-  <h2 class="text-center text-xl mb-6">Crear producto</h2>
+  <h2 class="text-center text-xl mb-6">
+    {{ formMode() === 'create' ? 'Crear' : 'Editar' }} producto
+  </h2>
   <!---------- code ----------->
   <div class="mb-5 relative">
     <label for="name" class="block text-left mb-1 text-sm font-medium text-gray-900">Código</label>
@@ -116,11 +118,22 @@
       >Cargar Imagen</label
     >
     <span class="text-xs">{{ imageName() }}</span>
-    <input type="file" id="image" class="hidden" (change)="verifyFile($event)" />
+    <input
+      type="file"
+      id="image"
+      class="hidden"
+      (change)="verifyFile($event)"
+      [disabled]="imageName() !== 'Ninguna imagen seleccionada'"
+    />
+    @if(imageName() !== 'Ninguna imagen seleccionada'){
+    <button type="button" (click)="removeImage()" class="absolute left-auto right-3 cursor-pointer">❌</button>
+    }
     <p class="mt-2 bottom-[-1rem] text-xs text-gray-400 absolute">
       Formatos permitidos: (bmp, jpg, jpeg, png, webp)
     </p>
   </div>
+
+  <!---------- Buttons ----------->
   <div class="flex items-center justify-center gap-2 mt-9">
     <button
       type="submit"
@@ -142,7 +155,8 @@
   >
     Producto creado satisfactoriamente
   </div>
-  } @else if (requestStatus() === "error" || requestImageStatus() === "error" || requestStatusLoading() === "error") {
+  } @else if (requestStatus() === "error" || requestImageStatus() === "error" ||
+  requestStatusLoading() === "error") {
   <div
     class="w-full max-w-[400px] mx-auto bg-red-600 text-center text-white py-3 rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
   >

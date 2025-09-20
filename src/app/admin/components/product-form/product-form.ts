@@ -61,6 +61,7 @@ export class ProductForm implements OnInit {
     category: ['', [Validators.required]],
     price: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
     stock: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
+    image: [''],
   });
 
   /* NgOnInit */
@@ -70,6 +71,7 @@ export class ProductForm implements OnInit {
       const id = params['id'];
       if (!id || isNaN(id)) return;
       this.productId.set(parseInt(id));
+      this.formMode.set('edit');
       this.getProduct();
     });
   }
@@ -98,9 +100,12 @@ export class ProductForm implements OnInit {
     if (data) {
       this.formMode.set('edit');
       this.product.set(data);
+      if (data.image) {
+        this.imageName.set('Contiene imagen');
+      }
       this.form.patchValue({
         ...data,
-        category: data.category.id,
+        category: data.category?.id || '',
       });
       this.requestStatusLoading.set('success');
     }
@@ -116,10 +121,7 @@ export class ProductForm implements OnInit {
       this.imageName()
     );
     if (!valid) {
-      this.imageName.set('Ninguna imagen seleccionada');
-      this.uploadImage.set(false);
-      this.filePath.set('');
-      this.file.set(null);
+      this.removeImage();
     }
     if (file && filePath) {
       this.filePath.set(filePath);
@@ -150,26 +152,17 @@ export class ProductForm implements OnInit {
     }
   }
 
-  /* Save the form */
-  async save() {
-    this.form.markAllAsTouched();
-    if (this.form.invalid) return;
-    this.form.disable();
-    const dto: CreateProductDto = this.form.getRawValue() as unknown as CreateProductDto;
-    if (this.uploadImage()) {
-      await this.upload();
-      if (this.requestImageStatus() === 'error') {
-        this.errorMessage.set('Error al cargar la imagen');
-        this.form.enable();
-        setTimeout(() => {
-          this.requestImageStatus.set('init');
-        }, 3000);
-        return;
-      }
-      dto.image = this.finalImageName() as string;
-    }
-    this.requestStatus.set('loading');
+  /* Remove Image */
+  removeImage() {
+    this.imageName.set('Ninguna imagen seleccionada');
+    this.uploadImage.set(false);
+    this.filePath.set('');
+    this.file.set(null);
+    this.form.patchValue({ image: '' });
+  }
 
+  /* Create Product */
+  async create(dto: CreateProductDto) {
     const { data, error } = await this.productService.create(dto);
 
     if (error) {
@@ -197,6 +190,63 @@ export class ProductForm implements OnInit {
         this.form.reset();
         this.form.enable();
       }, 3000);
+    }
+  }
+
+  /* Create Product */
+  async update(dto: UpdateProductDto) {
+    const { data, error } = await this.productService.update(
+      this.productId() as Product['id'],
+      dto
+    );
+
+    if (error) {
+      this.requestStatus.set('error');
+      this.errorMessage.set('Error al actualizar el producto');
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.form.enable();
+      }, 3000);
+      return;
+    }
+
+    if (data) {
+      this.requestStatus.set('success');
+
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.uploadImage.set(false);
+        this.uploadImage.set(false);
+        this.form.enable();
+      }, 3000);
+    }
+  }
+
+  /* Save the form */
+  async save() {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
+    this.form.disable();
+
+    const formValue = this.form.getRawValue();
+
+    if (this.uploadImage()) {
+      await this.upload();
+      if (this.requestImageStatus() === 'error') {
+        this.errorMessage.set('Error al cargar la imagen');
+        this.form.enable();
+        setTimeout(() => {
+          this.requestImageStatus.set('init');
+        }, 3000);
+        return;
+      }
+      formValue.image = this.finalImageName() as string;
+    }
+    this.requestStatus.set('loading');
+    if (this.formMode() === 'create') {
+      this.create(formValue as unknown as CreateProductDto);
+    } else {
+      this.update(formValue as unknown as UpdateProductDto);
     }
   }
 }
