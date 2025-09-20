@@ -111,7 +111,7 @@ export class ProductForm implements OnInit{
 
   async save() {
     this.form.markAllAsTouched();
-    if (!this.form.valid) return;
+    if (this.form.invalid) return;
     this.form.disable();
     const dto: CreateProductDto = this.form.getRawValue() as unknown as CreateProductDto;
     if (this.uploadImage()) {

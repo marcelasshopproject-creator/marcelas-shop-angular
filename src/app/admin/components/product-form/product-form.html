@@ -43,18 +43,23 @@
       formControlName="category"
       class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
       [disabled]="categories().length === 0 || requestStatusCategories() === 'error'"
+      required
     >
       @if (requestStatusCategories() === "error") {
-      <option [value]="null" selected class="text-red-500">Error cargando categorías</option>
-
-      } @else { @if (categories().length === 0) {
-      <option [value]="null" selected>No hay categorías</option>
+      <option value="" class="text-red-500">Error cargando categorías</option>
+      } @else if (categories().length === 0) {
+      <option value="">No hay categorías</option>
       } @else {
-      <option [value]="null" selected>Seleccióna la categoría</option>
+      <option value="">Seleccióna la categoría</option>
       @for (category of categories(); track $index) {
       <option [value]="category.id">{{ category.name }}</option>
-      } } }
+      } }
     </select>
+    @if (form.controls.category.touched && form.controls.category.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+      La categoría del producto es requerida
+    </p>
+    }
   </div>
 
   <!---------- price ----------->
