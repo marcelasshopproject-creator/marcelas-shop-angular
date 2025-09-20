@@ -142,11 +142,11 @@
   >
     Producto creado satisfactoriamente
   </div>
-  } @else if (requestStatus() === "error") {
+  } @else if (requestStatus() === "error" || requestImageStatus() === "error" || requestStatusLoading() === "error") {
   <div
     class="w-full max-w-[400px] mx-auto bg-red-600 text-center text-white py-3 rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
   >
-    Error al crear el producto
+    {{ errorMessage() }}
   </div>
   }
 </form>
