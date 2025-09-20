@@ -19,10 +19,10 @@ export class ProductData {
 
   private TABLENAME = 'products';
 
-  getAll = async () => this.supabase.from(this.TABLENAME).select('*');
+  getAll = async () => this.supabase.from(this.TABLENAME).select('*, category(*)');
 
   get = async (id: Product['id']) =>
-    this.supabase.from(this.TABLENAME).select('*').eq('id', id).single();
+    this.supabase.from(this.TABLENAME).select('*, category(*)').eq('id', id).single();
 
   create = async (dto: CreateProductDto) =>
     this.supabase.from(this.TABLENAME).insert(dto).select();
