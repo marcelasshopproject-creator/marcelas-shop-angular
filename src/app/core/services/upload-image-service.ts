@@ -11,7 +11,7 @@ export class UploadImageService {
   currentFile: undefined = undefined;
   uploadFile = signal<boolean>(false);
   filePath = signal<string>('');
-  BUCKET_NAME = 'product-images';
+  finalFilePathImage = signal<string | null>(null)
   VALID_TYPES = ['bmp', 'jpg', 'jpeg', 'png', 'webp'];
 
   verifyImage(file: any, fileName: string = '') {
@@ -24,7 +24,7 @@ export class UploadImageService {
       name.split('.')[1].split('').reverse().join('').split(' ').join('_').replace(pattern, '');
 
     if (!this.VALID_TYPES.includes(ext)) {
-      alert(`Files with extensions ${ext} not permited`);
+      alert(`Archivos de tipo ${ext} no están permitidos`);
       return { valid: false, filePath: null, file: null, newName };
     }
     const filePath = `${newName}.${ext}`;

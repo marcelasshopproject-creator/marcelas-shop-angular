@@ -7,6 +7,7 @@ import { Loading } from '../../../shared/ui/loading/loading';
 
 /* Services */
 import { ProductData } from '../../../core/services/product-data';
+import { UploadImageService } from '../../../core/services/upload-image-service';
 
 /* Interfaces */
 import { Product } from '../../../core/interfaces/product';
@@ -26,8 +27,16 @@ import { RequestStatus } from '../../../core/types/request-status-type';
 export class ProductForm {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private productService: ProductData = inject(ProductData);
+  private uploadImageService: UploadImageService = inject(UploadImageService);
   requestStatus = signal<RequestStatus>('init');
   product = signal<Product | null>(null);
+  imageName = signal<string>('Ninguna imagen seleccionada');
+  finalImageName = signal<string | null>(null);
+  uploadImage = signal<boolean>(false);
+  filePath = signal<string | null>(null);
+  file = signal<any>(null);
+  requestImageStatus = signal<RequestStatus>('init');
+  BUCKET_NAME = 'product_images';
 
   form = this.formBuilder.group({
     code: ['', [Validators.required]],
@@ -36,13 +45,65 @@ export class ProductForm {
     stock: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
   });
 
+  verifyFile(e: any) {
+    const newFile = e.target.files[0];
+    if (!newFile) return;
+    this.imageName.set(new Date().getTime().toString());
+    const { valid, filePath, file } = this.uploadImageService.verifyImage(
+      newFile,
+      this.imageName()
+    );
+    if (!valid) {
+      this.imageName.set('Ninguna imagen seleccionada');
+      this.uploadImage.set(false);
+      this.filePath.set('');
+      this.file.set(null);
+    }
+    if (file && filePath) {
+      this.filePath.set(filePath);
+      this.file.set(file);
+      this.uploadImage.set(true);
+    }
+  }
+
+  async upload() {
+    if (this.file && this.filePath) {
+      this.requestImageStatus.set('loading');
+      const { data, error } = await this.uploadImageService.uploadImage(
+        this.file(),
+        this.BUCKET_NAME,
+        this.filePath() as string
+      );
+      console.log('ERROR =>', error);
+      console.log('DATA => ', data);
+      if (error) {
+        alert('Error al subir la imagen');
+        this.requestImageStatus.set('error');
+        return;
+      }
+      if (data) {
+        const { fullPath } = data;
+        this.finalImageName.set(fullPath);
+        this.requestImageStatus.set('success');
+      }
+    }
+  }
+
   async save() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
     this.form.disable();
-    this.requestStatus.set('loading');
-
     const dto: CreateProductDto = this.form.getRawValue() as unknown as CreateProductDto;
+    if (this.uploadImage()) {
+      await this.upload();
+      if (this.requestImageStatus() === 'error') {
+        alert('Error subiendo la imagen');
+        this.form.enable();
+        return;
+      }
+      dto.image = this.finalImageName() as string;
+    }
+    this.requestStatus.set('loading');
 
     const { data, error } = await this.productService.create(dto);
 
@@ -60,6 +121,13 @@ export class ProductForm {
 
       setTimeout(() => {
         this.requestStatus.set('init');
+        this.uploadImage.set(false);
+        this.imageName.set('Ninguna imagen seleccionada');
+        this.finalImageName.set(null);
+        this.uploadImage.set(false);
+        this.filePath.set(null);
+        this.file.set(null);
+
         this.form.reset();
         this.form.enable();
       }, 3000);

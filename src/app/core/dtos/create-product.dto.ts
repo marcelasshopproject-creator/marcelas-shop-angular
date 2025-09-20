@@ -3,4 +3,5 @@ export interface CreateProductDto {
   code: string;
   price: number;
   stock: number;
+  image?: string;
 }
