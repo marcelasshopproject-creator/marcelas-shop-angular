@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -6,10 +6,12 @@ import { RouterLink } from '@angular/router';
 import { Loading } from '../../../shared/ui/loading/loading';
 
 /* Services */
+import { CategoryData } from '../../../core/services/category-data';
 import { ProductData } from '../../../core/services/product-data';
 import { UploadImageService } from '../../../core/services/upload-image-service';
 
 /* Interfaces */
+import { Category } from '../../../core/interfaces/category';
 import { Product } from '../../../core/interfaces/product';
 
 /* DTO's */
@@ -24,12 +26,15 @@ import { RequestStatus } from '../../../core/types/request-status-type';
   imports: [ReactiveFormsModule, RouterLink, Loading],
   templateUrl: './product-form.html',
 })
-export class ProductForm {
+export class ProductForm implements OnInit{
   private formBuilder: FormBuilder = inject(FormBuilder);
+  private categoryService: CategoryData = inject(CategoryData);
   private productService: ProductData = inject(ProductData);
   private uploadImageService: UploadImageService = inject(UploadImageService);
   requestStatus = signal<RequestStatus>('init');
+  requestStatusCategories = signal<RequestStatus>('init');
   product = signal<Product | null>(null);
+  categories = signal<Category[]>([])
   imageName = signal<string>('Ninguna imagen seleccionada');
   finalImageName = signal<string | null>(null);
   uploadImage = signal<boolean>(false);
@@ -41,9 +46,26 @@ export class ProductForm {
   form = this.formBuilder.group({
     code: ['', [Validators.required]],
     name: ['', [Validators.required]],
+    category: ['', [Validators.required]],
     price: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
     stock: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
   });
+
+  ngOnInit(): void {
+    this.getCategories()
+  }
+
+  async getCategories() {
+    this.requestStatusCategories.set("loading")
+    const { error, data} = await this.categoryService.getAll()
+    if(error) {
+      this.requestStatusCategories.set("error")
+    }
+    if(data) {
+      this.requestStatusCategories.set("success")
+      this.categories.set(data)
+    }
+  }
 
   verifyFile(e: any) {
     const newFile = e.target.files[0];
@@ -74,8 +96,6 @@ export class ProductForm {
         this.BUCKET_NAME,
         this.filePath() as string
       );
-      console.log('ERROR =>', error);
-      console.log('DATA => ', data);
       if (error) {
         alert('Error al subir la imagen');
         this.requestImageStatus.set('error');

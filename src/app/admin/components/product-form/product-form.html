@@ -7,7 +7,7 @@
       type="text"
       id="code"
       formControlName="code"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
       required
     />
     @if (form.controls.code.touched && form.controls.code.hasError('required')) {
@@ -24,7 +24,7 @@
       type="text"
       id="name"
       formControlName="name"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
       required
     />
     @if (form.controls.name.touched && form.controls.name.hasError('required')) {
@@ -34,6 +34,29 @@
     }
   </div>
 
+  <div class="mb-5 relative">
+    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 text-left"
+      >Categoría</label
+    >
+    <select
+      id="category"
+      formControlName="category"
+      class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
+      [disabled]="categories().length === 0 || requestStatusCategories() === 'error'"
+    >
+      @if (requestStatusCategories() === "error") {
+      <option [value]="null" selected class="text-red-500">Error cargando categorías</option>
+
+      } @else { @if (categories().length === 0) {
+      <option [value]="null" selected>No hay categorías</option>
+      } @else {
+      <option [value]="null" selected>Seleccióna la categoría</option>
+      @for (category of categories(); track $index) {
+      <option [value]="category.id">{{ category.name }}</option>
+      } } }
+    </select>
+  </div>
+
   <!---------- price ----------->
   <div class="mb-5 relative">
     <label for="price" class="block text-left mb-1 text-sm font-medium text-gray-900">Precio</label>
@@ -41,7 +64,7 @@
       type="text"
       id="price"
       formControlName="price"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
       required
     />
     @if (form.controls.price.touched && form.controls.price.hasError('required')) {
@@ -57,13 +80,13 @@
   </div>
 
   <!---------- stock ----------->
-  <div class="mb-5 relative">
+  <div class="mb-10 relative">
     <label for="stock" class="block text-left mb-1 text-sm font-medium text-gray-900">Stock</label>
     <input
       type="text"
       id="stock"
       formControlName="stock"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
       required
     />
     @if (form.controls.stock.touched && form.controls.stock.hasError('required')) {
@@ -78,9 +101,9 @@
     }
   </div>
 
-  <!---------- stock ----------->
+  <!---------- image ----------->
   <div
-    class="mb-5 relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 text-left"
+    class="mb-5 relative bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 text-left"
   >
     <label
       for="image"
@@ -88,12 +111,7 @@
       >Cargar Imagen</label
     >
     <span class="text-xs">{{ imageName() }}</span>
-    <input
-      type="file"
-      id="image"
-      class="hidden"
-      (change)="verifyFile($event)"
-    />
+    <input type="file" id="image" class="hidden" (change)="verifyFile($event)" />
     <p class="mt-2 bottom-[-1rem] text-xs text-gray-400 absolute">
       Formatos permitidos: (bmp, jpg, jpeg, png, webp)
     </p>
@@ -101,7 +119,7 @@
   <div class="flex items-center justify-center gap-2 mt-9">
     <button
       type="submit"
-      class="cursor-pointer max-auto text-white bg-pink-500 hover:bg-pink-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+      class="cursor-pointer max-auto text-white bg-pink-500 hover:bg-pink-900 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
     >
       Guardar
     </button>
