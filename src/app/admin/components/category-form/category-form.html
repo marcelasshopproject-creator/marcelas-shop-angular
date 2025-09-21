@@ -1,4 +1,7 @@
 <form class="max-w-sm mx-auto text-center relative" [formGroup]="form" (ngSubmit)="save()">
+  <h2 class="text-center text-xl mb-6">
+    {{ formMode() === 'create' ? 'Crear' : 'Editar' }} categoría
+  </h2>
   <!---------- name ----------->
   <div class="mb-5 relative">
     <label for="name" class="block text-left mb-1 text-sm font-medium text-gray-900">Nombre</label>

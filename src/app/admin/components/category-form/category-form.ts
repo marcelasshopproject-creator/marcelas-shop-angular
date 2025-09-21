@@ -71,16 +71,9 @@ export class CategoryForm implements OnInit {
     });
   }
 
-  /* Save the form */
-  async save() {
-    this.form.markAllAsTouched();
-    if (!this.form.valid) return;
-    this.form.disable();
-    this.requestStatus.set('loading');
-
-    const dto: CreateCategoryDto = this.form.getRawValue() as CreateCategoryDto;
-
-    const { data, error } = await this.categoryService.create(dto);
+  /* Create Category */
+  async create(dto: CreateCategoryDto) {
+     const { data, error } = await this.categoryService.create(dto);
 
     if (error) {
       this.requestStatus.set('error');
@@ -99,6 +92,44 @@ export class CategoryForm implements OnInit {
         this.form.reset();
         this.form.enable();
       }, 3000);
+    }
+  }
+
+  /* Update Category */
+  async update(dto: UpdateCategoryDto) {
+    const { data, error } = await this.categoryService.update(this.categoryId() as Category['id'], dto);
+
+    if (error) {
+      this.requestStatus.set('error');
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.form.enable();
+      }, 3000);
+      return;
+    }
+
+    if (data) {
+      this.requestStatus.set('success');
+      setTimeout(() => {
+        this.requestStatus.set('init');
+        this.form.enable();
+      }, 3000);
+    }
+  }
+
+  /* Save the form */
+  async save() {
+    this.form.markAllAsTouched();
+    if (!this.form.valid) return;
+    this.form.disable();
+    this.requestStatus.set('loading');
+
+    const dto = this.form.getRawValue() as CreateCategoryDto | UpdateCategoryDto;
+
+    if (this.formMode() === 'create') {
+      this.create(dto as CreateCategoryDto);
+    } else {
+      this.update(dto as UpdateCategoryDto);
     }
   }
 }
