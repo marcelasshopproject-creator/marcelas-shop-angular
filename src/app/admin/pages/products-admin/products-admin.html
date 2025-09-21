@@ -1,5 +1,5 @@
 <div class="w-full max-w-[1200px] mx-auto">
-  <h1 class="text-3xl text-center py-3">Products</h1>
+  <h1 class="text-3xl text-center py-3">Productos</h1>
 
   <!-- Table Header -->
   <section class="flex items-center bg-pink-50">
@@ -53,17 +53,18 @@
                 <th scope="col" class="px-6 py-3">Categoría</th>
                 <th scope="col" class="px-6 py-3">Precio</th>
                 <th scope="col" class="px-6 py-3">Stock</th>
+                <th scope="col" class="px-6 py-3">Imagen</th>
                 <th scope="col" class="px-6 py-3">Acciones</th>
               </tr>
             </thead>
             <tbody>
               @if (requestStatus() === "loading") {
               <tr>
-                <td class="px-6 py-4 text-center" colspan="6">Cargando...</td>
+                <td class="px-6 py-4 text-center" colspan="7">Cargando...</td>
               </tr>
               } @else if (requestStatus() === "error") {
               <tr>
-                <td class="px-6 py-4 text-center text-red-500" colspan="6">
+                <td class="px-6 py-4 text-center text-red-500" colspan="7">
                   Error, no se pudieron cargar los datos
                 </td>
               </tr>
@@ -77,6 +78,7 @@
                 <td class="px-6 px-4">{{product.category?.name}}</td>
                 <td class="px-6 px-4">{{product.price}}</td>
                 <td class="px-6 px-4">{{product.stock}}</td>
+                <td class="px-6 px-4">{{product.image && "🖼️"}}</td>
                 <td class="px-6 py-4">
                   <button class="cursor-pointer mr-6" [routerLink]="`/admin/productos/editar/${product.id}`">✏️</button>
                   <button class="cursor-pointer mr-6" (click)="delete(product.id)">❌</button>
@@ -84,7 +86,7 @@
               </tr>
             } } @else {
               <tr>
-                <td class="px-6 py-4 text-center" colspan="6">No hay datos para mostrar</td>
+                <td class="px-6 py-4 text-center" colspan="7">No hay datos para mostrar</td>
               </tr>
               } }
             </tbody>
