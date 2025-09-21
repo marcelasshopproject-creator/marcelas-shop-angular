@@ -1,57 +1,38 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+// header.component.ts
+import { Component, inject, effect } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Session, User } from '@supabase/supabase-js';
 
 /* Services */
 import { AuthService } from '../../../core/services/auth-service';
 
 /* Interfaces */
-import { AuthState } from '../../../core/interfaces/auth-state';
 import { Profile } from '../../../core/interfaces/profile';
 
 @Component({
   selector: 'app-header',
   imports: [RouterLink],
   templateUrl: './header.html',
+  standalone: true,
 })
-export class Header implements OnInit {
+export class Header {
   private authService = inject(AuthService);
 
-  private user = signal<User | null>(null);
-  private session = signal<any | null>(null);
-  profile = signal<Profile | null>(null);
+  // Usamos directamente los signals del servicio
+  readonly session = this.authService.session;
+  readonly profile = this.authService.profile;
+  readonly isAuthenticated = this.authService.isAuthenticated;
+  readonly isAdmin = this.authService.isAdmin;
 
-  async ngOnInit(): Promise<void> {
-    const session = await this.authService.session;
-    this.user.set(session);
-    this.authService.authChanges(async (_, session) => {
-      this.session.set(session);
-      //console.log(this.session())
-      const user: User = this.session().user;
-      this.user.set(user);
-      this.getProfile();
+  // Opcional: efecto para logs o side effects
+  constructor() {
+    effect(() => {
+      console.log('Header actualizado - Usuario autenticado:', this.isAuthenticated());
+      console.log('Perfil:', this.profile());
     });
   }
 
-  async getProfile() {
-    try {
-      const { user } = this.session();
-      const { data: profile, error, status } = await this.authService.profile(user);
-      if (error && status !== 406) {
-        throw error;
-      }
-      if (profile) {
-        this.profile.set(profile);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      }
-    }
-  }
-
-  signOut() {
+  // Método para cerrar sesión
+  signOut(): void {
     this.authService.signOut();
-    this.profile.set(null)
   }
 }
