@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute, Params } from '@angular/router';
 
 /* Components */
 import { Loading } from '../../../shared/ui/loading/loading';
@@ -16,6 +16,7 @@ import { CreateCategoryDto } from '../../../core/dtos/create-category.dto';
 import { UpdateCategoryDto } from '../../../core/dtos/update-category.dto';
 
 /* Types */
+import { FormMode } from '../../../core/types/form-mode-type';
 import { RequestStatus } from '../../../core/types/request-status-type';
 
 @Component({
@@ -23,16 +24,54 @@ import { RequestStatus } from '../../../core/types/request-status-type';
   imports: [ReactiveFormsModule, RouterLink, Loading, RouterLink],
   templateUrl: './category-form.html',
 })
-export class CategoryForm {
-  private formBuilder: FormBuilder = inject(FormBuilder);
+export class CategoryForm implements OnInit {
+  /* Services */
+  private activateRoute = inject(ActivatedRoute);
   private categoryService: CategoryData = inject(CategoryData);
-  requestStatus = signal<RequestStatus>('init');
-  category = signal<Category | null>(null);
+  private formBuilder: FormBuilder = inject(FormBuilder);
 
+  /* Signals */
+  requestStatus = signal<RequestStatus>('init');
+  requestStatusLoading = signal<RequestStatus>('init');
+  category = signal<Category | null>(null);
+  categoryId = signal<Category['id'] | null>(null);
+  formMode = signal<FormMode>('create');
+
+  /* Form */
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
   });
 
+    /* Get Category */
+    async getCategory() {
+      this.requestStatusLoading.set('loading');
+      const { error, data } = await this.categoryService.get(this.categoryId() as Category['id']);
+      if (error) {
+        alert('Error al obtener la categoría');
+        this.requestStatusLoading.set('error');
+        this.form.disable();
+      }
+      if (data) {
+        this.requestStatusLoading.set('success');
+        this.category.set(data);
+        this.form.patchValue({
+          name: data.name,
+        });
+      }
+    }
+
+  /* NgOnInit */
+  ngOnInit(): void {
+    this.activateRoute.params.subscribe((params: Params) => {
+      const id = params['id'];
+      if (!id || isNaN(id)) return;
+      this.categoryId.set(parseInt(id));
+      this.formMode.set('edit');
+      this.getCategory();
+    });
+  }
+
+  /* Save the form */
   async save() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
