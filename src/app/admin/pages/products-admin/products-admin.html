@@ -76,7 +76,7 @@
                 </th>
                 <td class="px-6 px-4">{{product.name}}</td>
                 <td class="px-6 px-4">{{product.category?.name}}</td>
-                <td class="px-6 px-4">{{product.price}}</td>
+                <td class="px-6 px-4">{{product.price | currencyColombian}}</td>
                 <td class="px-6 px-4">{{product.stock}}</td>
                 <td class="px-6 px-4">{{product.image && "🖼️"}}</td>
                 <td class="px-6 py-4">

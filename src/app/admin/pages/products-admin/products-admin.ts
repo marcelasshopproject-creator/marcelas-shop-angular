@@ -10,9 +10,12 @@ import { Product } from '../../../core/interfaces/product';
 /* Types */
 import { RequestStatus } from '../../../core/types/request-status-type';
 
+/* Pipes */
+import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pipe';
+
 @Component({
   selector: 'app-products-admin',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyColombianPipe],
   templateUrl: './products-admin.html',
 })
 export class ProductsAdmin {
