@@ -1,11 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, input, inject, signal } from '@angular/core';
+
+/* Services */
+import { UploadImageService } from '../../../core/services/upload-image-service';
+
+/* Interfaces */
+import { Product } from '../../../core/interfaces/product';
+
+/* Pipes */
+import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pipe';
 
 @Component({
   selector: 'app-product-list-item',
-  imports: [],
+  imports: [CurrencyColombianPipe],
   templateUrl: './product-list-item.html',
-  styleUrl: './product-list-item.scss'
 })
-export class ProductListItem {
+export class ProductListItem implements OnInit {
+  /* Input */
+  product = input.required<Product>();
+  urlImage = signal<string>("/images/no-image-2.png")
 
+  /* Services */
+  imageService = inject(UploadImageService);
+
+  /* Constants */
+  BUCKET_NAME = 'product_images';
+
+  ngOnInit(): void {
+    this.getUrlImage();
+  }
+
+  async getUrlImage() {
+    if (this.product().image) {
+      const { data } = await this.imageService.getImage(
+        this.BUCKET_NAME,
+        this.product().image as string
+      );
+      this.urlImage.set(data.publicUrl)
+    }
+  }
 }
