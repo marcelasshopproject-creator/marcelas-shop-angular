@@ -5,4 +5,5 @@ export interface CreateProductDto {
   price: number;
   stock: number;
   image?: string;
+  description?: string;
 }

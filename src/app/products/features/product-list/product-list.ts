@@ -38,7 +38,6 @@ export class ProductList implements OnInit {
     }
     if(data){
       this.products.set(data)
-      console.log(data);
       this.requestStatus.set("success")
     }
   }

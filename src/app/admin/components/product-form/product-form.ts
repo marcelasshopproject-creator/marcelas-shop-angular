@@ -62,6 +62,7 @@ export class ProductForm implements OnInit {
     price: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
     stock: [0, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(0)]],
     image: [''],
+    description: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(200)]],
   });
 
   /* NgOnInit */

@@ -53,7 +53,6 @@ export class ProductDetail implements OnInit {
       alert('Ocurrió un error al recuperar la información');
       this.requestStatus.set('error');
       console.error(error)
-      console.log(data)
     }
     if (data) {
       this.product.set(data);
