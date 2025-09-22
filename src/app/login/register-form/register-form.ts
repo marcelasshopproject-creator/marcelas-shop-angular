@@ -9,8 +9,8 @@ import { Loading } from '../../shared/ui/loading/loading';
 import { AuthService } from '../../core/services/auth-service';
 
 
-/* Interfaces */
-import { Profile } from '../../core/interfaces/profile';
+/* DTO's */
+import { CreateProfileDto } from '../../core/dtos/create-profile.dto';
 
 /* Types */
 import { RequestStatus } from '../../core/types/request-status-type';
@@ -66,13 +66,10 @@ export class RegisterForm {
     }
 
     if (user) {
-      const profile: Profile = {
+      const profile: CreateProfileDto = {
         fullname: fullname!,
         address: address!,
         phone: phone!,
-        is_admin: false,
-        is_deleted: false,
-        is_blocked: false,
       };
       const { error: profileError } = await this.authService.updateProfile(user.id, profile);
       if (profileError) {

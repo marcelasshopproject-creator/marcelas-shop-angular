@@ -1,4 +1,5 @@
 export interface Profile {
+  id: string;
   fullname: string;
   is_admin: boolean;
   phone: string;
