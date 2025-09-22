@@ -17,7 +17,7 @@ import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pi
 export class ProductListItem implements OnInit {
   /* Input */
   product = input.required<Product>();
-  urlImage = signal<string>("/images/no-image-2.png")
+  urlImage = signal<string>('/images/no-image-2.png');
 
   /* Services */
   imageService = inject(UploadImageService);
@@ -35,7 +35,7 @@ export class ProductListItem implements OnInit {
         this.BUCKET_NAME,
         this.product().image as string
       );
-      this.urlImage.set(data.publicUrl)
+      this.urlImage.set(data.publicUrl);
     }
   }
 }

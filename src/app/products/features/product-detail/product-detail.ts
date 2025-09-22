@@ -19,7 +19,7 @@ import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pi
 
 @Component({
   selector: 'app-product-detail',
-  imports: [Loading, CurrencyColombianPipe],
+  imports: [RouterLink, Loading, CurrencyColombianPipe],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail implements OnInit {
@@ -52,7 +52,7 @@ export class ProductDetail implements OnInit {
     if (error) {
       alert('Ocurrió un error al recuperar la información');
       this.requestStatus.set('error');
-      console.error(error)
+      console.error(error);
     }
     if (data) {
       this.product.set(data);

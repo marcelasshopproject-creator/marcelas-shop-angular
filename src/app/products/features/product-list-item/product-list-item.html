@@ -11,9 +11,10 @@
   <div class="pt-6">
     <a
       [href]="'tienda/' + product().id"
-      class="text-lg font-semibold leading-tight text-gray-900 hover:underline"
+      class="text-lg font-semibold leading-tight text-pink-800 hover:underline"
       >{{ product().name }}</a
     >
+    <p class="opacity-50 text-sm">{{ product().category?.name }}</p>
     <ul class="mt-2 flex items-center gap-4">
       <li class="flex items-center gap-2">
         <svg
