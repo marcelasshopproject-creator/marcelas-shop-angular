@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
-/* Guard */
+/* Guards */
 import { adminGuard } from './core/guards/admin-guard';
+import { authenticatedGuard } from './core/guards/authenticated-guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,11 @@ export const routes: Routes = [
   {
     path: 'tienda',
     loadChildren: () => import('./products/features/product-shell/product.route'),
+  },
+  {
+    path: 'carrito',
+    loadComponent: () => import('./cart/cart').then((c) => c.Cart),
+    canActivate: [authenticatedGuard],
   },
   {
     path: 'admin',
