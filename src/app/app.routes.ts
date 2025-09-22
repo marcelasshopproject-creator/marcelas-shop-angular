@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 /* Guards */
 import { adminGuard } from './core/guards/admin-guard';
 import { authenticatedGuard } from './core/guards/authenticated-guard';
+import { unAuthenticatedGuard } from './core/guards/un-authenticated-guard';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'ingresar',
     loadComponent: () => import('./login/login').then((c) => c.Login),
+    canActivate: [unAuthenticatedGuard],
   },
   {
     path: '**',
