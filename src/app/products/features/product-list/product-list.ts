@@ -19,27 +19,26 @@ import { RequestStatus } from '../../../core/types/request-status-type';
 })
 export class ProductList implements OnInit {
   /* Services */
-  private productService = inject(ProductData)
+  private productService = inject(ProductData);
 
   /* Signals */
-  products = signal<Product[]>([])
-  requestStatus = signal<RequestStatus>("init")
+  products = signal<Product[]>([]);
+  requestStatus = signal<RequestStatus>('init');
 
   ngOnInit(): void {
-    this.getProducts()
+    this.getProducts();
   }
 
-  async getProducts(){
-    this.requestStatus.set("loading")
-    const { error, data } = await this.productService.getAll()
-    if(error) {
-      console.log(error)
-      this.requestStatus.set("error")
+  async getProducts() {
+    this.requestStatus.set('loading');
+    const { error, data } = await this.productService.getAllAvailable();
+    if (error) {
+      console.log(error);
+      this.requestStatus.set('error');
     }
-    if(data){
-      this.products.set(data)
-      this.requestStatus.set("success")
+    if (data) {
+      this.products.set(data);
+      this.requestStatus.set('success');
     }
   }
-
 }
