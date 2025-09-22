@@ -1,6 +1,6 @@
 <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
   <div class="h-56 w-full">
-    <a [href]="'tienda/' + product().id">
+    <a [routerLink]="['/tienda', product().id]">
       <img
         class="mx-auto h-full"
         [src]="urlImage()"
@@ -10,7 +10,7 @@
   </div>
   <div class="pt-6">
     <a
-      [href]="'tienda/' + product().id"
+      [routerLink]="['/tienda', product().id]"
       class="text-lg font-semibold leading-tight text-pink-800 hover:underline"
       >{{ product().name }}</a
     >
