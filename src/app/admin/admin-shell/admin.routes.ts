@@ -29,4 +29,8 @@ export default [
     path: 'categorias/editar/:id',
     loadComponent: () => import('../pages/category-edit/category-edit').then((c) => c.CategoryEdit),
   },
+  {
+    path: 'pedidos',
+    loadComponent: () => import('../pages/orders/orders').then((c) => c.Orders),
+  },
 ] as Routes;

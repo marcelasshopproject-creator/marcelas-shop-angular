@@ -21,6 +21,12 @@ export class OrderService {
   private TABLENAME = 'orders';
   private ITEM_TABLE = 'order_items';
 
+  getOrders() {
+    const profile = this.authService.profile();
+    if (!profile?.id) return;
+    return this.supabase.from(this.TABLENAME).select('*');
+  }
+
   async createOrder() {
     const profile = this.authService.profile();
     if (!profile?.id) return;
