@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, effect } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 /* Components */
@@ -13,13 +13,13 @@ import { CartService } from '../core/services/cart-service';
   imports: [RouterLink, CartDetail, CartItemComponent],
   templateUrl: './cart.html',
 })
-export class Cart implements AfterViewInit {
+export class Cart implements OnInit {
   cartService = inject(CartService);
   cartItems = this.cartService.items$;
   total = this.cartService.total;
   isLoading = this.cartService.isLoading;
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.cartService.refresh();
   }
 }

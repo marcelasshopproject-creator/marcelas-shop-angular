@@ -1,15 +1,19 @@
-import { Component, OnInit, input, inject, signal } from '@angular/core';
+import { Component, OnInit, input, inject, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 /* Services */
 import { CartService } from '../../../core/services/cart-service';
 import { UploadImageService } from '../../../core/services/upload-image-service';
 
+/* Interfaces */
 import { CartItem } from '../../../core/interfaces/cart-item';
+
+/* Pipes */
+import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pipe';
 
 @Component({
   selector: 'app-cart-item-component',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyColombianPipe],
   templateUrl: './cart-item-component.html',
 })
 export class CartItemComponent implements OnInit {
@@ -36,6 +40,11 @@ export class CartItemComponent implements OnInit {
     const { data } = await this.imageService.getImage(this.BUCKET_NAME, image);
     this.urlImage.set(data.publicUrl);
   }
+
+  readonly canIncrement = computed(() => {
+    const item = this.cartItem();
+    return item.quantity < item.product.stock;
+  });
 
   increment() {
     this.cartService.updateQuantity(this.cartItem().product.id, 1);
