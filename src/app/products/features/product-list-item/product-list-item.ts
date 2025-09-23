@@ -1,6 +1,9 @@
 import { Component, OnInit, input, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+/* Components */
+import { AddToCartButton } from '../../../shared/ui/add-to-cart-button/add-to-cart-button';
+
 /* Services */
 import { UploadImageService } from '../../../core/services/upload-image-service';
 
@@ -12,7 +15,7 @@ import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pi
 
 @Component({
   selector: 'app-product-list-item',
-  imports: [RouterLink, CurrencyColombianPipe],
+  imports: [RouterLink, AddToCartButton, CurrencyColombianPipe],
   templateUrl: './product-list-item.html',
 })
 export class ProductListItem implements OnInit {

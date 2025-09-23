@@ -1,5 +1,5 @@
 export interface CreateCartItemDto {
-  user: string;
+  user_id: string;
   product: number;
   quantity: number;
 }

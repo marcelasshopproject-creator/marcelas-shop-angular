@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 
 /* Components */
+import { AddToCartButton } from '../../../shared/ui/add-to-cart-button/add-to-cart-button';
 import { Loading } from '../../../shared/ui/loading/loading';
 
 /* Services */
@@ -19,7 +20,7 @@ import { CurrencyColombianPipe } from '../../../core/pipes/currency-colombian.pi
 
 @Component({
   selector: 'app-product-detail',
-  imports: [RouterLink, Loading, CurrencyColombianPipe],
+  imports: [RouterLink, Loading, AddToCartButton, CurrencyColombianPipe],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail implements OnInit {

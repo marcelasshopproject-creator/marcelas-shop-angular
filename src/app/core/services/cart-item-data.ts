@@ -4,7 +4,6 @@ import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from '../../database/supabase-service';
 
 /* Interfaces */
-import { CartItem } from '../interfaces/cart-item';
 import { Profile } from '../interfaces/profile';
 import { Product } from '../interfaces/product';
 
@@ -28,15 +27,15 @@ export class CartItemData {
     this.supabase
       .from(this.TABLENAME)
       .select('*, product(*)')
-      .eq('user', user)
+      .eq('user_id', user)
       .eq('product', product)
       .single();
 
   create = (dto: CreateCartItemDto) => this.supabase.from(this.TABLENAME).insert(dto).select();
 
   update = (user: Profile['id'], product: Product['id'], dto: UpdateCartItemDto) =>
-    this.supabase.from(this.TABLENAME).update(dto).eq('user', user).eq('product', product).select();
+    this.supabase.from(this.TABLENAME).update(dto).eq('user_id', user).eq('product', product).select();
 
   delete = (user: Profile['id'], product: Product['id']) =>
-    this.supabase.from(this.TABLENAME).delete().eq('user', user).eq('product', product).select();
+    this.supabase.from(this.TABLENAME).delete().eq('user_id', user).eq('product', product).select();
 }
