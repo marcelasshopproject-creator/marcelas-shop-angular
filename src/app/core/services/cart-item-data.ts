@@ -33,8 +33,30 @@ export class CartItemData {
 
   create = (dto: CreateCartItemDto) => this.supabase.from(this.TABLENAME).insert(dto).select();
 
+async upsert(dto: CreateCartItemDto) {
+  const { data, error } = await this.supabase
+    .rpc('upsert_cart_item', {
+      user_id: dto.user_id,
+      product: dto.product,
+      quantity_delta: dto.quantity
+    })
+    .select('*, product(*)')
+    .single();
+
+  if (error) {
+    console.error('Error en upsert_cart_item:', error);
+  }
+
+  return { data, error };
+}
+
   update = (user: Profile['id'], product: Product['id'], dto: UpdateCartItemDto) =>
-    this.supabase.from(this.TABLENAME).update(dto).eq('user_id', user).eq('product', product).select();
+    this.supabase
+      .from(this.TABLENAME)
+      .update(dto)
+      .eq('user_id', user)
+      .eq('product', product)
+      .select();
 
   delete = (user: Profile['id'], product: Product['id']) =>
     this.supabase.from(this.TABLENAME).delete().eq('user_id', user).eq('product', product).select();
