@@ -33,7 +33,7 @@ export class ProductList implements OnInit {
     this.requestStatus.set('loading');
     const { error, data } = await this.productService.getAllAvailable();
     if (error) {
-      console.log(error);
+      alert("No se pudieron descargar los productos")
       this.requestStatus.set('error');
     }
     if (data) {
