@@ -5,7 +5,7 @@
     </a>
     <div class="w-full md:block md:w-auto" id="navbar-default">
       <ul
-        class="font-medium flex items-center md:items-end border space-x-2 justify-end md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
+        class="font-medium flex items-center md:items-end space-x-2 justify-end md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
       >
         @if (profile()) {
         <li>
@@ -14,7 +14,7 @@
         <li>
           <button
             routerLink="/carrito"
-            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
           >
             🛒
           </button>
@@ -23,7 +23,7 @@
         <li>
           <a
             routerLink="/admin"
-            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
             >Administrar</a
           >
         </li>
@@ -31,7 +31,7 @@
         <li>
           <button
             (click)="signOut()"
-            class="block py-2 px-3 text-white/50 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100/50 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
           >
             Salir
           </button>
@@ -40,7 +40,7 @@
         <li>
           <a
             routerLink="/ingresar"
-            class="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
             >Ingresar</a
           >
         </li>
