@@ -1,7 +1,7 @@
 <section class="bg-white py-8 antialiasedmd:py-16">
   <form action="#" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
     <div class="mx-auto max-w-3xl">
-      <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Detalle de la orden</h2>
+      <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Detalle del pedido</h2>
 
       <div class="mt-6 space-y-4 border-b border-t border-gray-200 py-8 sm:mt-8">
         <h4 class="text-lg font-semibold text-gray-900">Pago e información de envío</h4>
@@ -21,34 +21,30 @@
         </div>
 
         <div class="mt-4 space-y-6">
-          <h4 class="text-xl font-semibold text-gray-900">Order summary</h4>
+          <h4 class="text-xl font-semibold text-gray-900">Resumen del pedido</h4>
 
           <div class="space-y-4">
             <div class="space-y-2">
               <dl class="flex items-center justify-between gap-4">
-                <dt class="text-gray-500">Original price</dt>
-                <dd class="text-base font-medium text-gray-900">$6,592.00</dd>
+                <dt class="text-gray-500">Subtotal</dt>
+                <dd class="text-base font-medium text-gray-900">
+                  {{ subtotal() | currencyColombian }}
+                </dd>
               </dl>
 
               <dl class="flex items-center justify-between gap-4">
-                <dt class="text-gray-500">Savings</dt>
-                <dd class="text-base font-medium text-green-500">-$299.00</dd>
-              </dl>
-
-              <dl class="flex items-center justify-between gap-4">
-                <dt class="text-gray-500">Store Pickup</dt>
-                <dd class="text-base font-medium text-gray-900">$99</dd>
-              </dl>
-
-              <dl class="flex items-center justify-between gap-4">
-                <dt class="text-gray-500">Tax</dt>
-                <dd class="text-base font-medium text-gray-900">$799</dd>
+                <dt class="text-gray-500">Impuestos (19%)</dt>
+                <dd class="text-base font-medium text-gray-900">
+                  {{ taxes() | currencyColombian }}
+                </dd>
               </dl>
             </div>
 
             <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
               <dt class="text-lg font-bold text-gray-900">Total</dt>
-              <dd class="text-lg font-bold text-gray-900">$7,191.00</dd>
+              <dd class="text-lg font-bold text-gray-900">
+                {{ grandTotal() | currencyColombian }}
+              </dd>
             </dl>
           </div>
 
@@ -56,31 +52,30 @@
             <input
               id="terms-checkbox-2"
               type="checkbox"
-              value=""
-              class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500"
+              (click)="toggleAccept()"
+              [checked]="accepTerms()"
+              class="h-4 w-4 rounded border-pink-300 bg-pink-100 text-pink-600 focus:ring-2 focus:ring-pink-500"
             />
             <label for="terms-checkbox-2" class="ms-2 text-sm font-medium text-gray-900">
-              I agree with the
-              <a href="#" title="" class="text-primary-700 underline hover:no-underline"
-                >Terms and Conditions</a
-              >
-              of use of the Flowbite marketplace
+              Acepta los términos y condiciones para continuar con el pedido
             </label>
           </div>
 
           <div class="gap-4 sm:flex sm:items-center">
             <button
+              routerLink="/tienda"
               type="button"
-              class="w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              class="ml-6 border w-full border-pink-100 text-pink-950 sm:mt-0 hover:bg-pink-200/50 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2 focus:outline-none flex items-center justify-center"
             >
-              Return to Shopping
+              Continúa comprando
             </button>
 
             <button
+              [disabled]="!accepTerms()"
               type="submit"
-              class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 sm:mt-0"
+              class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
             >
-              Send the order
+              Completar el pedido
             </button>
           </div>
         </div>
