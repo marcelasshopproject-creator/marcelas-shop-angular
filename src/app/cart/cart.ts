@@ -2,6 +2,7 @@ import { Component, inject, AfterViewInit, effect } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 /* Components */
+import { CartDetail } from './components/cart-detail/cart-detail';
 import { CartItemComponent } from './components/cart-item-component/cart-item-component';
 
 /* Services */
@@ -9,7 +10,7 @@ import { CartService } from '../core/services/cart-service';
 
 @Component({
   selector: 'app-cart',
-  imports: [RouterLink, CartItemComponent],
+  imports: [RouterLink, CartDetail, CartItemComponent],
   templateUrl: './cart.html',
 })
 export class Cart implements AfterViewInit {

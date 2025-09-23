@@ -24,9 +24,19 @@ export class CartService {
 
   // Computed
   readonly count = computed(() => this.items().reduce((sum, item) => sum + item.quantity, 0));
-  readonly total = computed(() =>
+  readonly subtotal = computed(() =>
     this.items().reduce((sum, item) => sum + item.product.price * item.quantity, 0)
   );
+
+  // Taxes
+  readonly taxes = computed(() => {
+    return Math.round(this.subtotal() * 0.19 * 100) / 100;
+  });
+
+  // 🧾 GrandTotal: subtotal + taxes
+  readonly grandTotal = computed(() => {
+    return Math.round((this.subtotal() + this.taxes()) * 100) / 100;
+  });
 
   // Loading State
   private loading = signal(false);
@@ -55,6 +65,14 @@ export class CartService {
   async refresh() {
     await this.loadCart();
   }
+
+  readonly total = computed(() => {
+    return this.items().reduce((sum, item) => {
+      const price = item.product.price || 0;
+      const quantity = item.quantity || 0;
+      return sum + (price * quantity);
+    }, 0);
+  });
 
   async addItem(productId: number) {
     const user_id = this.authService?.profile()?.id as string;
@@ -99,7 +117,7 @@ export class CartService {
     }
     const { error, data } = await this.cartItemData.update(profile.id, productId, { quantity: newQuantity })
     if(error) {
-      alert("No se pudo actualizar")
+      alert("No se pudo actualizar")  
     }
     if(data) {
       this.items.update((prev): CartItem[] => {
