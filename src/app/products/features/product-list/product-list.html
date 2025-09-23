@@ -4,7 +4,7 @@
       @if (requestStatus() === "loading") {
       <app-loading />
       } @else if (requestStatus() === "error") { No se pudieron cargar los productos } @else if
-      (products().length === 0) { No hay productos para mostrat } @else { @for (item of products();
+      (products().length === 0) { No hay productos para mostrar } @else { @for (item of products();
       track $index) {
       <app-product-list-item [product]="item" />
       } }
