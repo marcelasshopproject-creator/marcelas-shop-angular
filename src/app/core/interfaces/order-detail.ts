@@ -3,4 +3,5 @@ export interface OrderDetail {
   user_id: string;
   subtotal: number;
   taxes: number;
+  grandtotal: number;
 }

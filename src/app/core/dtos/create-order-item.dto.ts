@@ -1,4 +1,4 @@
-export interface OrderItem {
+export interface CreateOrderItemDto {
   order_id: number;
   product: number;
   quantity: number;
