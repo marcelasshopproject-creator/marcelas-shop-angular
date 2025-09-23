@@ -21,9 +21,8 @@ export const routes: Routes = [
     canActivate: [authenticatedGuard],
   },
   {
-    path: 'orden',
-    loadComponent: () =>
-      import('./order/components/order-component/order-component').then((c) => c.OrderComponent),
+    path: 'pedido',
+    loadChildren: () => import('./order/order-shell/order.routes'),
   },
   {
     path: 'admin',
