@@ -17,57 +17,7 @@
 
       <div class="mt-6 sm:mt-8">
         <div class="relative overflow-x-auto border-b border-gray-200">
-          <table class="w-full text-left font-medium text-gray-900 md:table-fixed">
-            <tbody class="divide-y divide-gray-200">
-              <tr>
-                <td class="whitespace-nowrap py-4 md:w-[384px]">
-                  <div class="flex items-center gap-4">
-                    <a href="#" class="flex items-center aspect-square w-10 h-10 shrink-0">
-                      <img
-                        class="h-auto w-full max-h-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-                        alt="imac image"
-                      />
-                      <img
-                        class="hidden h-auto w-full max-h-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                        alt="imac image"
-                      />
-                    </a>
-                    <a href="#" class="hover:underline">Apple iMac 27”</a>
-                  </div>
-                </td>
-
-                <td class="p-4 text-base font-normal text-gray-900">x1</td>
-
-                <td class="p-4 text-right text-base font-bold text-gray-900">$1,499</td>
-              </tr>
-
-              <tr>
-                <td class="whitespace-nowrap py-4 md:w-[384px]">
-                  <div class="flex items-center gap-4">
-                    <a href="#" class="flex items-center aspect-square w-10 h-10 shrink-0">
-                      <img
-                        class="h-auto w-full max-h-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/iphone-light.svg"
-                        alt="imac image"
-                      />
-                      <img
-                        class="hidden h-auto w-full max-h-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/iphone-dark.svg"
-                        alt="imac image"
-                      />
-                    </a>
-                    <a href="#" class="hover:underline">Apple iPhone 14</a>
-                  </div>
-                </td>
-
-                <td class="p-4 text-base font-normal text-gray-900">x2</td>
-
-                <td class="p-4 text-right text-base font-bold text-gray-900">$1,998</td>
-              </tr>
-            </tbody>
-          </table>
+          <app-order-component-items [cartItems]="cartItems()" />
         </div>
 
         <div class="mt-4 space-y-6">

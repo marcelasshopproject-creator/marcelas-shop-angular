@@ -10,6 +10,7 @@ import { CartItem } from '../interfaces/cart-item';
 /* Dto'S */
 import { CreateCartItemDto } from '../dtos/create-cart-item.dto';
 import { UpdateCartItemDto } from '../dtos/update-cart-item.dto';
+import { Product } from '../interfaces/product';
 
 @Injectable({
   providedIn: 'root',
@@ -54,10 +55,10 @@ export class CartService {
     const { data, error } = await this.cartItemData.getAll(profile.id);
 
     if (error) {
-      console.error('Error cargando carrito:', error);
       this.items.set([]);
     } else {
       this.items.set(data || []);
+      await this.fixOverStockItems();
     }
     this.loading.set(false);
   }
@@ -73,6 +74,28 @@ export class CartService {
       return sum + (price * quantity);
     }, 0);
   });
+
+async fixOverStockItems() {
+  const profile = this.authService.profile();
+  if (!profile?.id) return;
+  const items = this.items();
+
+  for (const item of items) {
+    const productId = item.product.id;
+    const currentQuantity = item.quantity;
+    const availableStock = item.product.stock;
+    if (currentQuantity > availableStock && availableStock > 0) {
+
+      this.items.update(items =>
+        items.map(i => i.product.id === productId ? { ...i, quantity: availableStock } : i)
+      );
+
+      await this.cartItemData.update(profile.id, productId, {
+        quantity: availableStock,
+      });
+    }
+  }
+}
 
   async addItem(productId: number) {
     const user_id = this.authService?.profile()?.id as string;
@@ -90,7 +113,6 @@ export class CartService {
         }
       } else {
         const newQuantity = (dataGet.quantity += 1);
-        console.log(newQuantity);
         const dto: UpdateCartItemDto = { quantity: newQuantity };
         await this.cartItemData.update(user_id, productId, dto);
       }
@@ -111,7 +133,6 @@ export class CartService {
       await this.removeItem(productId);
       return;
     }
-    console.log(newQuantity);
     if (newQuantity === 0) {
       return;
     }
