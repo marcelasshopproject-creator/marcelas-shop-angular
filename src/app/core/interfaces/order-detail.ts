@@ -4,4 +4,5 @@ export interface OrderDetail {
   subtotal: number;
   taxes: number;
   grandtotal: number;
+  created_at: Date
 }
