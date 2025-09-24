@@ -22,10 +22,15 @@ export class OrderService {
   private ITEM_TABLE = 'order_items';
 
   getOrders() {
-    const profile = this.authService.profile();
-    if (!profile?.id) return;
-    return this.supabase.from(this.TABLENAME).select('*');
+  const profile = this.authService.profile();
+  if (!profile?.id) return;
+  return this.supabase
+    .from(this.TABLENAME)
+    .select('*')
+    .eq('user_id', profile.id)
+    .order('created_at', { ascending: false }); // 👈 Ordenar descendente
   }
+
 
   /**
    * Crea la orden, los order_items y actualiza el stock de los productos comprados.
