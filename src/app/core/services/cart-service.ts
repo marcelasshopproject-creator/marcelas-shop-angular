@@ -97,29 +97,43 @@ async fixOverStockItems() {
   }
 }
 
-  async addItem(productId: number) {
-    const user_id = this.authService?.profile()?.id as string;
-    try {
-      const { data: dataGet } = await this.cartItemData.get(user_id, productId);
-      if (!dataGet) {
-        const item: CreateCartItemDto = {
-          user_id,
-          product: productId,
-          quantity: 1,
-        };
-        const { error: errorNewItem } = await this.cartItemData.create(item);
-        if (errorNewItem) {
-          alert('No se pudo agregar el producto');
-        }
-      } else {
-        const newQuantity = (dataGet.quantity += 1);
-        const dto: UpdateCartItemDto = { quantity: newQuantity };
-        await this.cartItemData.update(user_id, productId, dto);
-      }
-    } catch (e) {
-      alert('No se puedo agregar el producto');
-    }
+  async addItem(productId: number): Promise<boolean> {
+  const user_id = this.authService?.profile()?.id as string;
+  if (!user_id) {
+    alert('Debes iniciar sesión para agregar productos');
+    return false;
   }
+
+  try {
+    const { data: dataGet } = await this.cartItemData.get(user_id, productId);
+
+    if (!dataGet) {
+      const item: CreateCartItemDto = {
+        user_id,
+        product: productId,
+        quantity: 1,
+      };
+      const { error: errorNewItem } = await this.cartItemData.create(item);
+      if (errorNewItem) {
+        alert('No se pudo agregar el producto');
+        return false;
+      }
+    } else {
+      const newQuantity = dataGet.quantity + 1;
+      const dto: UpdateCartItemDto = { quantity: newQuantity };
+      const { error } = await this.cartItemData.update(user_id, productId, dto);
+      if (error) {
+        alert('No se pudo actualizar el producto');
+        return false;
+      }
+    }
+    return true; // ✅ Todo bien
+  } catch (e) {
+    alert('No se pudo agregar el producto');
+    return false;
+  }
+}
+
 
   async updateQuantity(productId: number, delta: number) {
     const profile = this.authService.profile();
@@ -138,7 +152,7 @@ async fixOverStockItems() {
     }
     const { error, data } = await this.cartItemData.update(profile.id, productId, { quantity: newQuantity })
     if(error) {
-      alert("No se pudo actualizar")  
+      alert("No se pudo actualizar")
     }
     if(data) {
       this.items.update((prev): CartItem[] => {

@@ -1,6 +1,4 @@
-import { Component, input, inject } from '@angular/core';
-
-/* Services */
+import { Component, input, inject, signal } from '@angular/core';
 import { CartService } from '../../../core/services/cart-service';
 
 @Component({
@@ -10,11 +8,21 @@ import { CartService } from '../../../core/services/cart-service';
 })
 export class AddToCartButton {
   productId = input.required<number>();
-
-  /* Services */
   cartService = inject(CartService);
 
+  showAlert = signal(false); // Control de alerta
+
   async addToCart() {
-    this.cartService.addItem(this.productId());
+    const success = await this.cartService.addItem(this.productId());
+
+    if (success) {
+      // ✅ Mostrar la alerta rosa solo si se agregó bien
+      this.showAlert.set(true);
+
+      // Ocultar después de 2.5 segundos
+      setTimeout(() => {
+        this.showAlert.set(false);
+      }, 2500);
+    }
   }
 }
