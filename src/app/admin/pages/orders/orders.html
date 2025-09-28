@@ -1,0 +1,59 @@
+<section class="bg-transparent py-8 antialiased md:py-16">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <div class="mx-auto max-w-5xl">
+      <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+        <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Pedidos</h2>
+      </div>
+
+      <div class="mt-6 flow-root sm:mt-8">
+        @for (item of orders(); track $index) {
+        <div class="divide-y divide-black-200">
+          <div class="flex flex-wrap items-center gap-y-4 py-6">
+
+            <!-- Pedido ID -->
+            <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+              <dt class="text-base font-medium text-gray-500">Pedido ID:</dt>
+              <dd class="mt-1.5 text-base font-semibold text-gray-900">
+                <a href="#" class="hover:underline">#{{ item.id }}</a>
+              </dd>
+            </dl>
+
+            <!-- Fecha -->
+            <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+              <dt class="text-base font-medium text-gray-500">Fecha:</dt>
+              <dd class="mt-1.5 text-base font-semibold text-gray-900">
+                {{ item.created_at | date : 'dd/MM/yyyy' }}
+              </dd>
+            </dl>
+
+            <!-- Subtotal -->
+            <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+              <dt class="text-base font-medium text-gray-500">SubTotal:</dt>
+              <dd class="mt-1.5 text-base font-semibold text-gray-900">
+                {{ item.subtotal | currencyColombian }}
+              </dd>
+            </dl>
+
+            <!-- Impuestos -->
+            <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+              <dt class="text-base font-medium text-gray-500">Impuestos:</dt>
+              <dd class="mt-1.5 text-base font-semibold text-gray-900">
+                {{ item.taxes | currencyColombian }}
+              </dd>
+            </dl>
+
+            <!-- Total -->
+            <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+              <dt class="text-base font-medium text-gray-500">Total:</dt>
+              <dd class="mt-1.5 text-base font-semibold text-gray-900">
+                {{ item.grandtotal | currencyColombian }}
+              </dd>
+            </dl>
+
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

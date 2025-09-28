@@ -1,0 +1,50 @@
+<form class="max-w-sm mx-auto text-center relative" [formGroup]="form" (ngSubmit)="save()">
+  <h2 class="text-center text-xl mb-6">
+    {{ formMode() === 'create' ? 'Crear' : 'Editar' }} categoría
+  </h2>
+  <!---------- name ----------->
+  <div class="mb-5 relative">
+    <label for="name" class="block text-left mb-1 text-sm font-medium text-gray-900">Nombre</label>
+    <input
+      type="text"
+      id="name"
+      formControlName="name"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      required
+    />
+    @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">El nombre de la categoría es requerido</p>
+    }
+  </div>
+  <div class="flex items-center justify-center gap-2 mt-9">
+    <button
+    type="submit"
+    class="max-auto text-white bg-pink-500 hover:bg-pink-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+  >
+    Guardar
+  </button>
+  <button
+    type="button"
+    routerLink="/admin/categorias"
+    class="max-auto text-pink-500 bg-transparent border border-pink-500 hover:bg-pink-100 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+  >
+    Cancelar/Volver
+  </button>
+  </div>
+  @if (requestStatus() === "success") {
+  <div
+    class="w-full max-w-[400px] mx-auto bg-green-500 py-3 text-center text-white rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
+  >
+    Categoría creado satisfactoriamente
+  </div>
+  } @else if (requestStatus() === "error") {
+  <div
+    class="w-full max-w-[400px] mx-auto bg-red-600 text-center text-white py-3 rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
+  >
+    Error al crear la categoría
+  </div>
+  }
+</form>
+@if(requestStatus() === 'loading') {
+<app-loading />
+}

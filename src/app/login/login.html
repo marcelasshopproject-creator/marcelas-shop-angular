@@ -1,0 +1,18 @@
+<div class="w-full h-full">
+  <h1 class="text-3xl text-center mb-6">{{ loginMode() ? 'Ingresa' : 'Regístrate' }}</h1>
+  <div class="w-full max-w-[500px] mx-auto">
+    @if(loginMode()) {
+    <app-login-form />
+    <div class="text-xs text-gray-500 text-center mt-3">
+      ¿No tienes una cuenta?
+      <button class="cursor-pointer underline" (click)="loginMode.set(false)">Click aqui</button>
+    </div>
+    } @else {
+        <app-register-form (changeToLoginMode)="changeToLoginMode()" />
+    <div class="text-xs text-gray-500 text-center mt-3">
+      ¿Ya tienes una cuenta?
+      <button class="cursor-pointer underline" (click)="loginMode.set(true)">Click aqui</button>
+    </div>
+    }
+  </div>
+</div>

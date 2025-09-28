@@ -1,0 +1,52 @@
+<form class="max-w-sm mx-auto text-center relative" [formGroup]="form" (ngSubmit)="signIn()">
+  <!---------- Email ----------->
+  <div class="mb-5 relative">
+    <label for="email" class="block text-left mb-1 text-sm font-medium text-gray-900"
+      >Tu Email</label
+    >
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      placeholder="name@email.com"
+      required
+    />
+    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">El email es requerido</p>
+    } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">El email es inválido</p>
+    }
+  </div>
+  <div class="mb-5 relative">
+    <label for="password" class="block text-left mb-1 text-sm font-medium text-gray-900"
+      >Contraseña</label
+    >
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      required
+    />
+    @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+    <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">La contraseña es requerida</p>
+    }
+  </div>
+  <button
+    type="submit"
+    class="max-auto text-white bg-pink-500 hover:bg-pink-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+  >
+    Ingresar
+  </button>
+  @if (requestStatus() === "error") {
+  <div
+    class="w-full max-w-[400px] mx-auto bg-red-600 text-center text-white py-3 rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
+  >
+    Error al Ingresar
+  </div>
+  }
+</form>
+@if(requestStatus() === 'loading') {
+<app-loading />
+}

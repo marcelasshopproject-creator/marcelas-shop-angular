@@ -1,0 +1,29 @@
+<section class="bg-transparent py-8 antialiased md:py-16">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl inline">Carrito de compras</h2>
+    <a
+      routerLink="/tienda"
+      class="inline ml-6 border border-pink-100 text-pink-950 mt-4 sm:mt-0 hover:bg-pink-200/50 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none flex items-center justify-center"
+      role="button"
+    >
+      Volver
+    </a>
+
+    <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+      <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+        <div class="space-y-6">
+          @if (isLoading()) {
+          <p>Cargando carrito...</p>
+          } @else if (cartItems().length === 0) {
+          <p>Tu carrito está vacío</p>
+          } @else { @for (item of cartItems(); track $index) {
+          <app-cart-item-component [cartItem]="item" />
+          } }
+        </div>
+      </div>
+      <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+        <app-cart-detail />
+      </div>
+    </div>
+  </div>
+</section>

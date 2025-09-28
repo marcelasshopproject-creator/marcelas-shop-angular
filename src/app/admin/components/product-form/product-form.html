@@ -1,0 +1,219 @@
+<form class="max-w-xl mx-auto text-center relative" [formGroup]="form" (ngSubmit)="save()">
+  <h2 class="text-center text-xl mb-6">
+    {{ formMode() === 'create' ? 'Crear' : 'Editar' }} producto
+  </h2>
+  <div class="md:grid md:grid-cols-2 md:gap-x-3">
+    <div>
+      <!---------- code ----------->
+      <div class="mb-5 relative">
+        <label for="name" class="block text-left mb-1 text-sm font-medium text-gray-900"
+          >Código</label
+        >
+        <input
+          type="text"
+          id="code"
+          formControlName="code"
+          class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
+          required
+        />
+        @if (form.controls.code.touched && form.controls.code.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El código del producto es requerido
+        </p>
+        }
+      </div>
+
+      <!---------- category ----------->
+      <div class="mb-5 relative">
+        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 text-left"
+          >Categoría</label
+        >
+        <select
+          id="category"
+          formControlName="category"
+          class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
+          [disabled]="categories().length === 0 || requestStatusCategories() === 'error'"
+          required
+        >
+          @if (requestStatusCategories() === "error") {
+          <option value="" class="text-red-500">Error cargando categorías</option>
+          } @else if (categories().length === 0) {
+          <option value="">No hay categorías</option>
+          } @else {
+          <option value="">Seleccióna la categoría</option>
+          @for (category of categories(); track $index) {
+          <option [value]="category.id">{{ category.name }}</option>
+          } }
+        </select>
+        @if (form.controls.category.touched && form.controls.category.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          La categoría del producto es requerida
+        </p>
+        }
+      </div>
+    </div>
+
+    <div>
+      <!---------- price ----------->
+      <div class="mb-6 relative">
+        <label for="price" class="block text-left mb-1 text-sm font-medium text-gray-900"
+          >Precio</label
+        >
+        <input
+          type="text"
+          id="price"
+          formControlName="price"
+          class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
+          required
+        />
+        @if (form.controls.price.touched && form.controls.price.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El precio del producto es requerido
+        </p>
+        } @if (form.controls.price.touched && (form.controls.price.hasError('min') ||
+        form.controls.price.hasError('pattern'))) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El precio debe ser un número e igual o mayor a cero
+        </p>
+        }
+      </div>
+
+      <!---------- stock ----------->
+      <div class="mb-5 relative">
+        <label for="stock" class="block text-left mb-1 text-sm font-medium text-gray-900"
+          >Stock</label
+        >
+        <input
+          type="text"
+          id="stock"
+          formControlName="stock"
+          class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
+          required
+        />
+        @if (form.controls.stock.touched && form.controls.stock.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El stock del producto es requerido
+        </p>
+        } @if (form.controls.stock.touched && (form.controls.stock.hasError('min') ||
+        form.controls.stock.hasError('pattern'))) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El stock debe ser un número entero e igual o mayor a cero
+        </p>
+        }
+      </div>
+    </div>
+
+    <div class="md:col-span-2">
+      <!---------- name ----------->
+      <div class="mb-5 relative">
+        <label for="name" class="block text-left mb-1 text-sm font-medium text-gray-900"
+          >Nombre</label
+        >
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 focus:outline-none block w-full p-2.5"
+          required
+        />
+        @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          El nombre del producto es requerido
+        </p>
+        }
+      </div>
+      <!---------- description ----------->
+      <div class="mb-5 relative">
+        <label for="description" class="block mb-2 text-sm font-medium text-left">Descripción</label>
+        <textarea
+          id="description"
+          rows="6"
+          formControlName="description"
+          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+          placeholder="Escribe un descripción . . ."
+          required
+        ></textarea>
+        @if (form.controls.description.touched && form.controls.description.hasError('required')) {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          La descripción del producto es requerida
+        </p>
+        } @if (form.controls.description.hasError('minlength'))
+        {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          La descripción debe tener al menos 50 caracteres
+        </p>
+        } @if (form.controls.description.touched && form.controls.description.hasError('maxlength'))
+        {
+        <p class="mt-2 bottom-[-1rem] text-xs text-red-600 absolute">
+          La descripción debe tener máximo 200 caracteres
+        </p>
+        }
+      </div>
+
+      <!---------- image ----------->
+      <div
+        class="mb-5 relative bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 text-left"
+      >
+        <label
+          for="image"
+          class="text-left mb-1 text-sm font-medium bg-pink-500 text-white py-1 px-2 rounded-lg mr-2"
+          >Cargar Imagen</label
+        >
+        <span class="text-xs">{{ imageName() }}</span>
+        <input
+          type="file"
+          id="image"
+          class="hidden"
+          (change)="verifyFile($event)"
+          [disabled]="imageName() !== 'Ninguna imagen seleccionada'"
+        />
+        @if(imageName() !== 'Ninguna imagen seleccionada'){
+        <button
+          type="button"
+          (click)="removeImage()"
+          class="absolute left-auto right-3 cursor-pointer"
+        >
+          ❌
+        </button>
+        }
+        <p class="mt-2 bottom-[-1rem] text-xs text-gray-400 absolute">
+          Formatos permitidos: (bmp, jpg, jpeg, png, webp)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!---------- Buttons ----------->
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-2 mt-9">
+    <button
+      type="submit"
+      class="cursor-pointer max-auto text-white bg-pink-500 hover:bg-pink-900 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+    >
+      Guardar
+    </button>
+    <button
+      type="button"
+      routerLink="/admin/productos"
+      class="cursor-pointer max-auto text-pink-500 bg-transparent border border-pink-500 hover:bg-pink-100 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+    >
+      Cancelar/Volver
+    </button>
+  </div>
+  @if (requestStatus() === "success") {
+  <div
+    class="w-full max-w-[400px] mx-auto bg-green-500 py-3 text-center text-white rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
+  >
+    Producto creado satisfactoriamente
+  </div>
+  } @else if (requestStatus() === "error" || requestImageStatus() === "error" ||
+  requestStatusLoading() === "error") {
+  <div
+    class="w-full max-w-[400px] mx-auto bg-red-600 text-center text-white py-3 rounded-lg absolute left-[50%] translate-x-[-50%] bottom-[-6rem]"
+  >
+    {{ errorMessage() }}
+  </div>
+  }
+</form>
+@if(requestStatus() === 'loading') {
+<app-loading />
+}

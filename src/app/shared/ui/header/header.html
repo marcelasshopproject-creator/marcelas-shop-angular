@@ -1,0 +1,51 @@
+<nav class="bg-pink-900 border-b border-b-pink-950">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img class="w-[150px]" src="/images/marcela-logo.png" alt="">
+    </a>
+    <div class="w-full md:block md:w-auto" id="navbar-default">
+      <ul
+        class="font-medium flex items-center md:items-end space-x-2 justify-end md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
+      >
+        @if (profile()) {
+        <li>
+          <p class="text-white/50">Hola, {{ profile()?.fullname }}</p>
+        </li>
+        <li>
+          <button
+            routerLink="/carrito"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+          >
+            🛒
+          </button>
+        </li>
+        @if (profile()?.is_admin) {
+        <li>
+          <a
+            routerLink="/admin"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            >Administrar</a
+          >
+        </li>
+        }
+        <li>
+          <button
+            (click)="signOut()"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100/50 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+          >
+            Salir
+          </button>
+        </li>
+        } @else {
+        <li>
+          <a
+            routerLink="/ingresar"
+            class="block py-2 px-3 text-pink-200 transition-all duration-150 hover:text-pink-100 rounded-sm md:hover:bg-transparent md:border-0 md:hover:text-pink-100 md:p-0 cursor-pointer"
+            >Ingresar</a
+          >
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

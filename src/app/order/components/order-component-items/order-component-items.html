@@ -1,0 +1,22 @@
+<table class="w-full text-left font-medium text-gray-900 md:table-fixed">
+  <tbody class="divide-y divide-gray-200">
+    @for (item of items(); track $index) {
+    <tr>
+      <td class="whitespace-nowrap py-4 md:w-[384px]">
+        <div class="flex items-center gap-4">
+          <a href="#" class="flex items-center aspect-square w-10 h-10 shrink-0">
+            <img class="h-auto w-full max-h-full" [src]="item.url" alt="imac image" />
+          </a>
+          <a href="#" class="hover:underline">{{ item.item.product.name }}</a>
+        </div>
+      </td>
+
+      <td class="p-4 text-base font-normal text-gray-900">x{{ item.item.quantity }}</td>
+
+      <td class="p-4 text-right text-base font-bold text-gray-900">
+        ${{ item.item.product.price * item.item.quantity | currencyColombian }}
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

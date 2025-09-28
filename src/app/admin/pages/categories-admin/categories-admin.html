@@ -1,0 +1,95 @@
+<div class="w-full max-w-[800px] mx-auto">
+  <h1 class="text-3xl text-center py-3">Categorías</h1>
+
+  <!-- Table Header -->
+  <section class="flex items-center bg-pink-50">
+    <div class="w-full max-w-screen-xl px-4 mx-auto lg:px-12">
+      <div class="relative overflow-hidden bg-white shadow-md sm:rounded-lg">
+        <div
+          class="flex-row items-center justify-end p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4"
+        >
+          <button
+            type="button"
+            routerLink="/admin/categorias/crear"
+            class="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5 mr-2 -ml-1"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+              />
+            </svg>
+            Crear Categoría
+          </button>
+          <button
+            type="button"
+            (click)="getCategories()"
+            class="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+          >
+            Actualizar
+          </button>
+          <button
+            type="button"
+            routerLink="/admin"
+            class="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 focus:outline-none"
+          >
+            Volver
+          </button>
+        </div>
+
+        <!-- Table -->
+
+        <div class="relative overflow-x-auto">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-gray-700 bg-pink-200 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Nombre</th>
+                <th scope="col" class="px-6 py-3 text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (requestStatus() === "loading") {
+              <tr>
+                <td class="px-6 py-4 text-center" colspan="2">Cargando...</td>
+              </tr>
+              } @else if (requestStatus() === "error") {
+              <tr>
+                <td class="px-6 py-4 text-center text-red-500" colspan="2">
+                  Error, no se pudieron cargar los datos
+                </td>
+              </tr>
+              } @else { @if(categories().length > 0) { @for (category of categories(); track $index)
+              {
+              <tr class="bg-white border-b border-gray-200">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  {{ category.name }}
+                </th>
+                <td class="px-6 py-4 text-center">
+                  <button
+                    class="cursor-pointer mr-6"
+                    [routerLink]="`/admin/categorias/editar/${category.id}`"
+                  >
+                    ✏️
+                  </button>
+                  <button (click)="deleteCategory(category.id)" class="cursor-pointer">❌</button>
+                </td>
+              </tr>
+              } } @else {
+              <tr>
+                <td class="px-6 py-4 text-center" colspan="2">No hay datos para mostrar</td>
+              </tr>
+              } }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- End Table -->
+      </div>
+    </div>
+  </section>
+</div>
